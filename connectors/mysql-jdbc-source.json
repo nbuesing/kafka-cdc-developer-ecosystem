@@ -1,0 +1,31 @@
+{
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "dialect.name" : "MySqlDatabaseDialect",
+    "tasks.max": "2",
+    "connection.url": "jdbc:mysql://mysql:3306",
+    "connection.user" : "root",
+    "connection.password" : "debezium",
+
+    "quote.sql.identifiers": "never",
+    "quote.database.names": "never",
+    "quote.table.names": "never",
+    "quote.column.names": "never",
+
+    "topic.prefix": "JDBC.MYSQL.",
+
+    "schema.pattern": "ORDERS",
+
+    "poll.interval.ms" : 6000,
+
+    "mode":"timestamp",
+    "timestamp.column.name": "UPDATE_TS",
+
+    "table.whitelist" : "PURCHASE_ORDER,PURCHASE_ORDER_ITEM",
+
+    "validate.non.null": false,
+
+    "transforms" : "createKey",
+    "transforms.createKey.type" : "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields" : "ID"
+
+}

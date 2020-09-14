@@ -1,0 +1,14 @@
+.DS_Store
+.idea
+.gradle
+grafana.db
+build
+/tmp
+/connect/docker/downloads/*
+/connect/connect-lib/*
+/mysql/data/*
+/oracle/data/*
+/oracle/init.d/startup/*_data.sql
+/oracle/init.d/startup.stage/*_data.sql
+/ksqlDB/ksqldb-udfs/*
+*_data.sql

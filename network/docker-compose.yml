@@ -1,0 +1,7 @@
+---
+version: '3.7'
+
+networks:
+  default:
+    name: kafka-local
+    driver: bridge

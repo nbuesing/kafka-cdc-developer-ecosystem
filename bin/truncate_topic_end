@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+ echo "usage: $0 topic"
+ exit
+fi
+
+TOPIC=$1
+shift
+
+
+kafka-configs --bootstrap-server localhost:19092 --entity-type topics --entity-name $TOPIC --alter --delete-config 'retention.ms, retention.bytes, segment.ms, flush.messages, flush.ms'
+
+kafka-topics --bootstrap-server localhost:19092 --topic $TOPIC --describe
+
+#kacc='kafka-avro-console-consumer --bootstrap-server localhost:19092 --property print.key=true --property key.separator=\| --key-deserializer=org.apache.kafka.common.serialization.BytesDeserializer --from-beginning --topic '
+

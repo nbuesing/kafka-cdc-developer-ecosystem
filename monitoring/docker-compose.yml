@@ -1,0 +1,46 @@
+---
+version: '3.7'
+
+networks:
+  default:
+    external:
+      name: kafka-local
+
+services:
+
+  prometheus:
+    hostname: prometheus
+    image: prom/prometheus
+    container_name: l_prometheus
+    privileged: true
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/targets.json:/etc/prometheus/targets.json
+
+  grafana:
+    hostname: grafana
+    image: grafana/grafana
+    container_name: l_grafana
+    depends_on:
+      - prometheus
+    ports:
+      - '3000:3000'
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    volumes:
+      - ./grafana/grafana.db:/var/lib/grafana
+      - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+  akhq:
+    hostname: kafkahq
+    image: tchiotludo/akhq:latest
+    container_name: l_akhq
+    ports:
+      - '9095:8080'
+    volumes:
+      - ./akhq.yml:/app/application.yml

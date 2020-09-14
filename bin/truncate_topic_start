@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+ echo "usage: $0 topic"
+ exit
+fi
+
+TOPIC=$1
+shift
+
+kafka-configs --bootstrap-server localhost:19092 --entity-type topics --entity-name $TOPIC --alter --add-config 'retention.ms=1, retention.bytes=1, segment.ms=1, flush.messages=1, flush.ms=1000'
+
+kafka-topics --bootstrap-server localhost:19092 --topic $TOPIC --describe
+

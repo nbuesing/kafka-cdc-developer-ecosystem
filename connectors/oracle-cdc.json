@@ -1,0 +1,32 @@
+{
+
+  "connector.class" : "com.ecer.kafka.connect.oracle.OracleSourceConnector",
+  "tasks.max" : 1,
+  "db.name.alias" : "cdc.oracle",
+
+  "topic": "",
+
+  "db.name" : "MYSID",
+  "db.hostname" : "oracle",
+  "db.port" : 1521,
+
+  "db.user" : "system",
+  "db.user.password" : "oracle",
+
+  "db.fetch.size" : 1,
+  "table.whitelist" : "ORDERS.*",
+  "table.blacklist" : "",
+  "parse.dml.data" : true,
+  "reset.offset" : true,
+  "multitenant" : false,
+
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+
+  "transforms" : "unwrap,createKey",
+
+  "transforms.unwrap.type" : "com.buesing.connect.smt.Unwrap$Value",
+  "transforms.createKey.type" : "org.apache.kafka.connect.transforms.ValueToKey",
+  "transforms.createKey.fields" : "ID"
+
+}
+

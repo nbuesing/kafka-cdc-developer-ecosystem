@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+ echo "usage: $0 topic key"
+ exit
+fi
+
+TOPIC=$1
+shift
+
+KEY=$1
+shift
+
+echo "${KEY}:" | kafkacat -b localhost:19092 -P -t ${TOPIC} -Z -K:
+
+echo ""
+
+kafka-console-consumer \
+    --bootstrap-server localhost:19092 \
+    --property print.key=true --property key.separator=\| \
+    --key-deserializer=org.apache.kafka.common.serialization.BytesDeserializer \
+    --from-beginning \
+    --topic ${TOPIC}

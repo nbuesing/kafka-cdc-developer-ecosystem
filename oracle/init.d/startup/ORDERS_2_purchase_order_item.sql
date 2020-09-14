@@ -1,0 +1,39 @@
+DECLARE
+
+    v_sql LONG;
+
+BEGIN
+
+    v_sql:='
+CREATE TABLE ORDERS.PURCHASE_ORDER_ITEM
+(
+    ID          VARCHAR(36) PRIMARY KEY,
+    ORDER_ID    VARCHAR2(36) NOT NULL,
+    SKU         VARCHAR(32) NOT NULL,
+    QUANTITY    NUMERIC NOT NULL,
+    PRICE       DECIMAL(9,2) NOT NULL,
+    CREATE_TS   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UPDATE_TS   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+)
+';
+
+    execute immediate v_sql;
+    EXCEPTION
+        WHEN OTHERS THEN
+            IF SQLCODE = -955 THEN
+                NULL; -- suppresses ORA-00955 exception
+            ELSE
+                RAISE;
+            END IF;
+END;
+/
+
+
+create or replace
+              TRIGGER ORDERS.PURCHASE_ORDER_ITEM_UP_T
+              BEFORE INSERT OR UPDATE ON ORDERS.PURCHASE_ORDER_ITEM
+    FOR EACH ROW
+BEGIN
+    :new.UPDATE_TS := SYSTIMESTAMP;
+END;
+

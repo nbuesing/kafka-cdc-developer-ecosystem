@@ -1,0 +1,27 @@
+#!/bin/sh
+
+PARTITIONS=6
+REPLICATION_FACTOR=3
+COMPRESSION_TYPE=producer
+BOOTSTRAP_SERVER=localhost:19092
+
+declare -a TOPICS=(
+"mysql.inventory.ADRC"
+)
+
+for TOPIC in ${TOPICS[@]}; do
+   echo "Creating topic $TOPIC"
+   kafka-topics \
+	   --bootstrap-server $BOOTSTRAP_SERVER \
+	   --create \
+	   --partitions $PARTITIONS \
+	   --replication-factor $REPLICATION_FACTOR \
+	   --topic $TOPIC \
+	   &
+done
+echo "Waiting for topic creation..."
+wait
+echo "Listing topics..."
+kafka-topics \
+	   --bootstrap-server $BOOTSTRAP_SERVER \
+	   --list

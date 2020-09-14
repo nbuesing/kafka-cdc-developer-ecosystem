@@ -1,0 +1,11 @@
+
+alter session set "_ORACLE_SCRIPT"=true;
+
+commit;
+
+create user ORDERS identified by "ORDERS_PASS";
+
+GRANT CONNECT TO ORDERS;
+GRANT CONNECT, RESOURCE, DBA TO ORDERS;
+GRANT UNLIMITED TABLESPACE TO ORDERS;
+
